@@ -2,10 +2,11 @@
 ### *Strategic Initiative for U.S. Healthcare Modernization & NIW Evidence*
 
 ## ⚖️ National Interest Statement (Matter of Dhanasar)
-This project is a proposed endeavor to address the **U.S. National Healthcare Crisis**—specifically physician burnout and administrative inefficiency, which currently costs the U.S. healthcare system approximately $265 billion annually. 
+This project is a proposed endeavor to address the **U.S. National Healthcare Crisis**—specifically administrative inefficiency and physician burnout. 
 
-*   **Substantial Merit:** Directly aligns with the **HHS AI Strategy (Dec 2025)** to "Modernize Care" and **Executive Order 14365** to accelerate AI innovation without state-level obstruction.
-*   **National Importance:** By providing a HIPAA-compliant, open-source alternative to proprietary scribes, this project enables rural and underfunded U.S. clinics to adopt advanced technology, furthering the national goal of equitable healthcare access.
+*   **Substantial Merit:** Directly aligns with the [HHS Artificial Intelligence Strategy (December 2025)](https://www.hhs.gov), which mandates the use of AI to "Modernize Care" and reduce administrative hurdles for healthcare providers.
+*   **Economic Impact:** Research indicates that administrative simplification and the reduction of "wasteful" clerical tasks could save the U.S. healthcare system up to **$265 billion annually** (Source: *McKinsey & Company, Administrative Simplification: The $265 Billion Opportunity*).
+*   **National Importance:** By providing a HIPAA-compliant, open-source alternative to proprietary scribes, this project enables rural and underfunded U.S. clinics to adopt advanced technology, furthering the national goal of equitable healthcare access as outlined in the Presidential Action: [Eliminating State-Law Obstruction of National Artificial Intelligence Policy (Dec 2025)](https://www.whitehouse.gov).
 
 ---
 
@@ -24,7 +25,7 @@ This project is a proposed endeavor to address the **U.S. National Healthcare Cr
 #### **A. Secure Audio Ingestion (`/services/audio_proc.py`)**
 - **Input:** Multi-format audio stream.
 - **Logic:** Utilize **OpenAI Whisper (Local)** for transcription.
-- **Constraint:** Implement a "Buffer-and-Purge" policy—no raw audio may be stored after transcription.
+- **Constraint:** Implement a "Buffer-and-Purge" policy—no raw audio may be stored after transcription to ensure patient privacy.
 
 #### **B. Clinical Entity Recognition (`/services/nlp_engine.py`)**
 - **Task:** Extract `Chief Complaint`, `HPI`, `ROS`, and `Assessment & Plan`.
@@ -45,8 +46,8 @@ This project is a proposed endeavor to address the **U.S. National Healthcare Cr
 To satisfy **Prong 2 (Well-Positioned)**, this repository must contain:
 
 1.  **Local Inference Mode:** A `docker-compose.yml` demonstrating that the system runs entirely on-premises (crucial for U.S. data sovereignty).
-2.  **Technical Whitepaper:** A `/docs/whitepaper.md` comparing system performance against **MedQA (USMLE)** benchmarks.
-3.  **HHS Alignment:** Documentation explicitly mapping project features to the [HHS AI Strategy Pillars](https://www.hhs.gov).
+2.  **HHS Alignment Doc:** A `/docs/hhs-alignment.md` file that explicitly maps project features to the five pillars of the **HHS AI Strategy (2025)**.
+3.  **Technical Whitepaper:** A `/docs/whitepaper.md` comparing system performance against **MedQA (USMLE)** benchmarks to prove technical efficacy.
 
 ---
 
