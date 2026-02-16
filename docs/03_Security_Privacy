@@ -1,0 +1,60 @@
+# Security & Privacy Requirements (LLM)
+
+## Threat Model Summary
+Primary risks:
+- PHI exposure in logs
+- Raw audio persistence
+- Insecure transport
+- Model prompt leakage (transcripts sent externally)
+- Unauthorized access to endpoints
+
+## Must-Have Controls (MVP)
+1. **No raw audio persistence**:
+   - Implement in-memory buffering only.
+   - Prohibit writing to disk. No /tmp usage for audio.
+   - Tests must confirm.
+
+2. **De-identification pipeline**:
+   - Stage A: Presidio detects entities.
+   - Stage B: Anonymizer replaces entities with placeholders:
+     - NAME -> [PERSON]
+     - PHONE -> [PHONE]
+     - LOCATION -> [LOCATION]
+     - DATE -> [DATE]
+   - Stage C: Custom rules for MRN-like patterns and emails if Presidio misses.
+   - Return list of detected entities for transparency.
+
+3. **Audit logging**:
+   - Each request logs event_name and correlation_id
+   - Never log raw transcript or PHI.
+   - Log only metadata and counts (e.g., entities_redacted=12)
+
+4. **Transport**:
+   - In docker-compose, include reverse proxy optional (documented).
+   - For local dev: plain HTTP acceptable on localhost.
+   - Document how to enable TLS termination (human action).
+
+5. **Encryption at rest (MVP posture)**:
+   - If you store anything (transcripts, notes), store only de-identified data.
+   - For MVP: allow ephemeral in-memory store only.
+   - If implementing persistence, use AES-GCM via `cryptography` and document key handling.
+
+## Middleware Requirements
+Create middleware `middleware/hipaa_guard.py` that:
+- Generates correlation_id if missing
+- Redacts sensitive fields from logs
+- Ensures responses include correlation_id
+- Blocks outbound calls to cloud LLM endpoints (config guardrail)
+  - In MVP: ensure llm calls go only to Ollama URL from env.
+
+## Logging Rules
+- Use JSON logs
+- Never include:
+  - raw audio bytes
+  - raw transcript (unless explicitly configured for non-PHI demo mode)
+  - patient identifiers
+- Provide a `PHI_SAFE_LOGGING=true/false` env guard; default true.
+
+## Required Files
+- `docs/threat-model.md` describing risks and mitigations.
+- Unit tests: `test_audit_logs.py` confirms sensitive text not logged.
