@@ -1,0 +1,46 @@
+# Local Deployment (On-Prem) — Docker Compose Instructions (LLM)
+
+## Goal
+Provide `infra/docker/docker-compose.yml` that runs:
+- FastAPI service
+- Ollama service
+Optionally:
+- A local reverse proxy (Caddy/Nginx) for TLS termination (documented)
+
+## Compose Requirements
+- Single command: `docker compose up --build`
+- No external network dependencies besides pulling images and optional model download
+- Use environment variables from `.env`
+
+## Services
+
+### 1) api
+- Build from `infra/docker/Dockerfile.api`
+- Expose port 8000
+- Env:
+  - OLLAMA_BASE_URL=http://ollama:11434
+  - LLM_MODEL=<default model name e.g. llama3.1 or mistral>
+  - PHI_SAFE_LOGGING=true
+  - REQUIRE_API_KEY=false (MVP)
+- Healthcheck calls /v1/health
+
+### 2) ollama
+- Use official ollama image
+- Expose port 11434 to host (optional)
+- Provide docs in `infra/docker/ollama/README.md` for pulling models:
+  - `ollama pull <model>`
+
+## Model Download Strategy
+- Document that model download is a human action if network restricted.
+- If possible, include optional init container pattern; otherwise document manual pull.
+
+## No persistence requirement (MVP)
+- Do not mount volumes that store PHI by default.
+- If volumes used, clearly label and default to de-identified only.
+
+## REQUIRED: Quickstart
+Update root README.md with:
+- prerequisites (docker installed)
+- copy .env.example -> .env
+- `docker compose up --build`
+- example curl commands for endpoints
