@@ -3,7 +3,7 @@
 Local-first clinical scribe API with in-memory audio processing, PHI de-identification, local Ollama note generation, and FHIR export.
 
 ## Features
-- Buffer-and-purge audio ingest (`/v1/ingest/audio`) with no raw audio persistence.
+- Buffer-and-purge audio ingest (`/v1/ingest/audio`) without raw audio persistence.
 - Presidio + custom regex de-identification.
 - Local-only LLM orchestration through Ollama.
 - Structured note generation validated by Pydantic schema.
