@@ -20,7 +20,7 @@
 - `pytest`
 
 ## Known limitations / next steps
-- Whisper may return mock transcript if model runtime cannot initialize.
+- Whisper transcription is unavailable until local model/runtime dependencies are installed; endpoint returns 503 in that state.
 - Terminology coding (ICD/SNOMED) is passthrough/null in MVP.
 - Production TLS and RBAC are human-operated setup tasks.
 
@@ -29,6 +29,8 @@
 
 
 ## Hardening updates
+- Added LOCATION regex fallback to keep location PHI redaction active when Presidio analyzer is unavailable.
+- Added explicit malformed `Content-Length` handling (400) for `/v1/ingest/audio`.
 - Presidio analyzer findings are now applied to output text (not metadata-only).
 - Ollama local-only guard now validates parsed hostname against an explicit allowlist.
 - Audio ingest now uses strict multipart parser limits (`request.form(max_part_size=...)`) to prevent spooling to disk by rejecting oversized parts.

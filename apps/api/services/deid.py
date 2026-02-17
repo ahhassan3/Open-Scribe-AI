@@ -8,6 +8,7 @@ CUSTOM_PATTERNS: dict[str, str] = {
     "PHONE_NUMBER": r"\b(?:\+1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b",
     "DATE_TIME": r"\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b",
     "PERSON": r"\b([A-Z][a-z]+\s[A-Z][a-z]+)\b",
+    "LOCATION": r"\b(?:\d{1,5}\s+[A-Za-z0-9.\-\s]+\s(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ln|Lane|Ct|Court)\b|[A-Z][a-z]+(?:\s[A-Z][a-z]+)*,\s?[A-Z]{2}\b|[A-Z][a-z]+(?:\s[A-Z][a-z]+)*\s(?:Hospital|Clinic|Medical\sCenter))",
 }
 
 PLACEHOLDERS = {
@@ -68,7 +69,7 @@ class Deidentifier:
             except Exception:
                 pass
 
-        for entity_type in ["EMAIL", "MRN", "PHONE_NUMBER", "DATE_TIME", "PERSON"]:
+        for entity_type in ["EMAIL", "MRN", "PHONE_NUMBER", "DATE_TIME", "PERSON", "LOCATION"]:
             text, metadata = self._replace_with_regex(text, entity_type)
             collected.extend(metadata)
 

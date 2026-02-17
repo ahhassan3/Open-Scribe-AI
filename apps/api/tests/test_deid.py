@@ -29,3 +29,15 @@ def test_analyzer_findings_are_applied_to_output():
     assert "Boston" not in redacted
     assert "[LOCATION]" in redacted
     assert any(e["entity_type"] == "LOCATION" for e in entities)
+
+
+def test_location_redacted_when_analyzer_unavailable():
+    svc = Deidentifier()
+    svc.analyzer = None
+
+    redacted, entities = svc.deidentify("Seen at Mass General Hospital in Boston, MA")
+
+    assert "Mass General Hospital" not in redacted
+    assert "Boston, MA" not in redacted
+    assert "[LOCATION]" in redacted
+    assert any(e["entity_type"] == "LOCATION" for e in entities)

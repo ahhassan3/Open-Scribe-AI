@@ -19,8 +19,15 @@ deidentifier = Deidentifier()
 async def ingest_audio(request: Request):
     settings = get_settings()
     content_length = request.headers.get("content-length")
-    if content_length and int(content_length) > settings.max_multipart_memory_bytes:
-        raise HTTPException(status_code=413, detail="Audio payload exceeds in-memory limit")
+    if content_length:
+        try:
+            parsed_content_length = int(content_length)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail="Invalid Content-Length header") from exc
+        if parsed_content_length < 0:
+            raise HTTPException(status_code=400, detail="Invalid Content-Length header")
+        if parsed_content_length > settings.max_multipart_memory_bytes:
+            raise HTTPException(status_code=413, detail="Audio payload exceeds in-memory limit")
 
     form = await request.form(max_files=1, max_fields=10, max_part_size=settings.max_multipart_memory_bytes)
     file = form.get("file")
