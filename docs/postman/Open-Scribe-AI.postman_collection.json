@@ -1,0 +1,76 @@
+{
+  "info": {
+    "name": "Open-Scribe-AI Local API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/v1/health"
+      }
+    },
+    {
+      "name": "Deidentify Text",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"John Doe MRN 12345678 seen at Mass General Hospital on 01/02/2026 email john@example.com\"\n}"
+        },
+        "url": "{{baseUrl}}/v1/ingest/deidentify"
+      }
+    },
+    {
+      "name": "Ingest Audio",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {"key": "file", "type": "file", "src": ""},
+            {"key": "deidentify", "type": "text", "value": "true"}
+          ]
+        },
+        "url": "{{baseUrl}}/v1/ingest/audio"
+      }
+    },
+    {
+      "name": "Generate Note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"transcript_text\": \"Patient complains of cough for three days with mild fatigue and no fever\"\n}"
+        },
+        "url": "{{baseUrl}}/v1/note/generate"
+      }
+    },
+    {
+      "name": "Export FHIR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"note\": {\n    \"chief_complaint\": \"cough\",\n    \"hpi\": \"3 days, no dyspnea\",\n    \"ros\": \"no fever\",\n    \"assessment_plan\": \"viral URI, hydration, return precautions\",\n    \"problems\": [{\"text\": \"acute cough\", \"icd10\": null, \"snomed\": null, \"confidence\": 0.78}]\n  },\n  \"encounter\": {\n    \"start\": \"2026-02-13T10:00:00\",\n    \"end\": \"2026-02-13T10:20:00\",\n    \"class\": \"AMB\",\n    \"reason\": \"cough\"\n  },\n  \"patient\": {\n    \"id\": \"example-patient-1\"\n  }\n}"
+        },
+        "url": "{{baseUrl}}/v1/fhir/export"
+      }
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8000"}
+  ]
+}
