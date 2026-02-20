@@ -24,6 +24,16 @@ Local-first clinical scribe API with in-memory audio processing, PHI de-identifi
    docker compose -f infra/docker/docker-compose.yml exec ollama ollama pull llama3.1:8b
    ```
 
+## Postman Testing
+1. Import `docs/postman/Open-Scribe-AI.postman_collection.json`.
+2. Set collection variable `baseUrl=http://localhost:8000`.
+3. Run in order:
+   - Health
+   - Deidentify Text
+   - Ingest Audio (attach a local audio file)
+   - Generate Note
+   - Export FHIR
+
 ## API Examples
 
 ### Health
@@ -68,6 +78,11 @@ curl -s -X POST http://localhost:8000/v1/fhir/export \
     "patient":{"id":"example-patient-1"}
   }'
 ```
+
+## Data Persistence Plan
+Production recommendation is PostgreSQL (relational) with PHI-safe artifact persistence only.
+- Design doc: `docs/database-architecture.md`
+- SQL scripts: `sql/001_init_schema.sql` to `sql/004_readiness_checks.sql`
 
 ## Local Dev
 ```bash

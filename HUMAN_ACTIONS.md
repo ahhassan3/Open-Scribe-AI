@@ -37,3 +37,14 @@ The following tasks require a human operator and cannot be completed autonomousl
 1. Execute end-to-end curl flow from README.
 2. Run `pytest` and archive test evidence for audits.
 3. Perform penetration/security testing in your target environment.
+
+
+## 8) Database provisioning and migrations
+1. Provision PostgreSQL 15+ in your target environment.
+2. Apply SQL scripts in order from `/sql`:
+   - `001_init_schema.sql`
+   - `002_indexes.sql`
+   - `003_retention_cleanup.sql`
+   - `004_readiness_checks.sql`
+3. Configure backup/restore and retention policy to match compliance requirements.
+4. Decide whether persistence is enabled at MVP stage or in v0.2 hardening.

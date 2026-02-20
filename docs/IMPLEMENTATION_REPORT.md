@@ -36,3 +36,9 @@
 - Audio ingest now uses strict multipart parser limits (`request.form(max_part_size=...)`) to prevent spooling to disk by rejecting oversized parts.
 - Whisper unavailable/error paths now fail with 503 instead of fabricating transcript text.
 - Audio buffers are purged in a `finally` block so failures are sanitized.
+
+
+## Database completion assets
+- Added relational data architecture decision in `docs/database-architecture.md`.
+- Added production SQL scripts under `/sql` for schema, indexes, retention cleanup, and readiness checks.
+- Added Postman collection for manual endpoint validation: `docs/postman/Open-Scribe-AI.postman_collection.json`.
